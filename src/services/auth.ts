@@ -36,4 +36,9 @@ export default class AuthService {
     const token = jwt.sign(payload, config.jwtSecretKey);
     return token;
   }
+
+  public decodeJwt = (token: string) => {
+    const payload = jwt.verify(token, config.jwtSecretKey);
+    return payload;
+  };
 }

@@ -6,6 +6,8 @@ import cors from 'cors';
 import logger from './logger';
 import HttpException from '@src/exceptions/HttpException';
 import api from '@src/api';
+import bearerToken from 'express-bearer-token';
+import { attachJwtInformation } from '@src/api/middleware/auth';
 
 const expressLoader = ({ app }: { app: express.Application }) => {
   app.get('/status', (req, res) => {
@@ -16,6 +18,8 @@ const expressLoader = ({ app }: { app: express.Application }) => {
   });
   app.use(morgan);
   app.use(cors());
+  app.use(bearerToken());
+  app.use(attachJwtInformation);
   app.use(express.json());
   app.use(config.api.prefix, api());
   app.use(errors());
