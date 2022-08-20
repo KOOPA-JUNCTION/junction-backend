@@ -23,6 +23,20 @@ const auth = (app: Router) => {
     },
   );
 
+  router.post<never, { accessToken: string }, { address: string }>(
+    '/wallet',
+    celebrate({
+      body: Joi.object({
+        address: Joi.string().hex().required(),
+      }),
+    }),
+    (req, res) => {
+      const authService = Container.get(AuthService);
+      const token = authService.authByAddress(req.body.address);
+      res.json({ accessToken: token });
+    },
+  );
+
   return router;
 };
 

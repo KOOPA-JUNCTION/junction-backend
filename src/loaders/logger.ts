@@ -46,7 +46,6 @@ const createLabeledLogger = (label: string) =>
   });
 
 const logger = createLabeledLogger('DEFAULT');
-export const discordJsLogger = createLabeledLogger('D.JS');
 
 process.on('unhandledRejection', (error) => {
   logger.error((error as Error).stack);
