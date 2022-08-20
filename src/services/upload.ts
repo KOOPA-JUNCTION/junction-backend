@@ -4,5 +4,5 @@ import { Service } from 'typedi';
 export default class UploadService {
   constructor() {}
 
-  public uploadImage() {}
+  public uploadImage = (file: Express.Multer.File) => {};
 }

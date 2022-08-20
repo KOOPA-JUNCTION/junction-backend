@@ -1,3 +1,4 @@
+import HttpException from '@src/exceptions/HttpException';
 import AuthService from '@src/services/auth';
 import expressAsyncHandler from 'express-async-handler';
 import Container from 'typedi';
@@ -25,4 +26,11 @@ export const attachJwtInformation = expressAsyncHandler((req, res, next) => {
   } catch {
     next();
   }
+});
+
+export const authRequired = expressAsyncHandler((req, res, next) => {
+  if (!req.user) {
+    throw new HttpException(401, '로그인이 필요합니다.');
+  }
+  next();
 });
