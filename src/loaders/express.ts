@@ -26,6 +26,7 @@ const expressLoader = ({ app }: { app: express.Application }) => {
       res.status(err.status).json({
         message: err.status === 500 ? 'unknown server error' : err.message,
         requestCode,
+        stack: err.stack,
       });
       if (err.status === 500) {
         logger.error(err.stack);
