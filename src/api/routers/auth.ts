@@ -49,11 +49,11 @@ const auth = (app: Router) => {
    *     description: 지갑 주소를 이용한 가입 or 로그인
    *     tags:
    *       - auth
-   *     parameters:
-   *       - in: body
-   *         name: body
-   *         schema:
-   *           $ref: '#/components/schemas/AddressAuthRequest'
+   *     requestBody:
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/AddressAuthRequest'
    *     responses:
    *       200:
    *         description: 정상적으로 가입 또는 로그인이 되었을 때
