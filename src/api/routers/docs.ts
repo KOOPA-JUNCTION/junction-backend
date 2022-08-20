@@ -16,6 +16,12 @@ const docs = (app: Router) => {
             title: 'back-pack-api',
             version: '1.0.0',
           },
+          servers: [
+            {
+              url: 'http://10.10.0.213:3000',
+              description: 'happy hacking~!',
+            },
+          ],
         },
         apis: ['./src/api/routers/*.ts'],
       }),
