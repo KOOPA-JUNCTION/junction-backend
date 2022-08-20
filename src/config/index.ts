@@ -9,6 +9,9 @@ const config = {
   api: {
     prefix: process.env.API_PREFIX || '',
   },
+  aws: {
+    s3bucket: 'junction-back-pack',
+  },
 };
 
 if (!config.dbURI) throw new Error('MONGO_DB is not provided');
