@@ -30,7 +30,10 @@ const upload = (app: Router) => {
    * @openapi
    * /upload/image:
    *   post:
-   *     description: 사진 업로드
+   *     description: |
+   *       사진 업로드
+   *       업로드를 하기 위해서는 이 API를 먼저 호출해서 사진을 서버에 올린 뒤,
+   *       해당 파일 이름을 다른 API에 전달해야 합니다.
    *     tags:
    *       - Upload
    *     requestBody:
