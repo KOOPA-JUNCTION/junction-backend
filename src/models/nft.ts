@@ -5,6 +5,13 @@ export const nftSchema = createSchema(
     contractAddress: Type.string(),
     name: Type.string(),
     imageFileName: Type.string(),
+    description: Type.string(),
+    properties: Type.array().of(
+      Type.object({ required: true }).of({
+        trait_type: Type.string({ required: true }),
+        value: Type.string({ required: true }),
+      }),
+    ),
   },
   { timestamps: true },
 );
