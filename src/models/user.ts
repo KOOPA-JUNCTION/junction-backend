@@ -2,7 +2,8 @@ import { createSchema, ExtractDoc, Type, typedModel } from 'ts-mongoose';
 
 export const userSchema = createSchema(
   {
-    address: Type.string(),
+    hexAddress: Type.string(),
+    bech32Address: Type.string(),
   },
   { timestamps: true },
 );

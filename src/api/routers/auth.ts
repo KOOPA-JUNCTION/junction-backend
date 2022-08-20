@@ -16,8 +16,10 @@ const auth = (app: Router) => {
    *       properties:
    *         address:
    *           type: string
-   *           format: hex
-   *           example: 0x00000000000000000000
+   *           example: 0x00000000000000000000, cosmos100000000000000000, osms100000000000000000
+   *         type:
+   *           type: string
+   *           example: hex, bech32, base58
    *     AuthResponse:
    *       type: object
    *       properties:
