@@ -31,6 +31,28 @@ const nfts = (app: Router) => {
     }),
   );
 
+  /**
+   * @openapi
+   * /nfts/rank:
+   *   get:
+   *     description: 랭킹 순으로 NFT 보여줌
+   *     responses:
+   *       200:
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 data:
+   *                   type: array
+   */
+  router.get(
+    '/rank',
+    expressAsyncHandler(async (req, res) => {
+      res.json({ data: [] });
+    }),
+  );
+
   return router;
 };
 
