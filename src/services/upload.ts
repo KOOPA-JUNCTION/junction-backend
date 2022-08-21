@@ -24,7 +24,9 @@ export default class UploadService {
       const extension = file.originalname.split('.').pop();
       const fileName = `${this.randHex(32)}.${extension}`;
       const filePath = path.join(__dirname, '../../files', fileName);
-      fs.createWriteStream(filePath).write(file.buffer);
+      const writeStream = fs.createWriteStream(filePath);
+      writeStream.write(file.buffer);
+      await new Promise((resolve) => writeStream.on('finish', resolve));
       const stream = fs.createReadStream(filePath);
       const resp = await this.pinata.pinFileToIPFS(stream);
       await this.ipfsModel.insertMany({
