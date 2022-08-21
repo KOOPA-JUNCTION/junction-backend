@@ -55,21 +55,6 @@ const nfts = (app: Router) => {
     }),
   );
 
-  /**
-   * @openapi
-   * /nfts/special:
-   *   get:
-   *     description: special NFT 리스트를 가져옵니다
-   *     responses:
-   *       200:
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 data:
-   *                   type: array
-   */
   router.get(
     '/special',
     expressAsyncHandler(async (req, res) => {
