@@ -36,6 +36,7 @@ export default class NftService {
     @Inject('models.nft') private nftModel: typeof Nft,
     private finished = promisify(stream.finished),
     private limit = pLimit(100),
+    private smallLimit = pLimit(20),
   ) {}
 
   private randHex = (bytes: number) =>
@@ -52,9 +53,10 @@ export default class NftService {
     );
     console.log(tokenData);
     const nfts = tokenData.filter((datum) => !datum.image.includes('ipfs://'));
+    let done = 0;
     const images = await Promise.all(
       nfts.map(({ image }) =>
-        this.limit(async () => {
+        this.smallLimit(async () => {
           const extension = image.split('.').pop();
           const imageName = `${this.randHex(32)}.${extension}`;
           const writer = fs.createWriteStream(
@@ -65,6 +67,8 @@ export default class NftService {
           });
           imageResponse.data.pipe(writer);
           await this.finished(writer);
+          done += 1;
+          console.log(done);
           return imageName;
         }),
       ),
