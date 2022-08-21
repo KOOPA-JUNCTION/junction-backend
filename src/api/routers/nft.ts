@@ -68,7 +68,7 @@ const nfts = (app: Router) => {
    * @openapi
    * /nfts/pick:
    *   get:
-   *     description: 에디터 픽 랜덤하게 보여줌
+   *     description: 투데이 픽중 랜덤하게 보여줌
    *     responses:
    *       200:
    *         content:
@@ -83,7 +83,7 @@ const nfts = (app: Router) => {
     '/pick',
     expressAsyncHandler(async (req, res) => {
       const nftService = Container.get(NftService);
-      const nfts = await nftService.getRandomNfts(2);
+      const nfts = await nftService.getTodaysPick();
       res.json({ data: nfts });
     }),
   );
