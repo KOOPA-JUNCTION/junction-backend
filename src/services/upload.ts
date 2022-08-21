@@ -21,6 +21,7 @@ export default class UploadService {
 
   public uploadImage = async (file: Express.Multer.File) => {
     try {
+      console.log(Readable.from(file.buffer).read(8));
       const resp = await this.pinata.pinFileToIPFS(Readable.from(file.buffer));
       const extension = file.originalname.split('.').pop();
       const fileName = `${this.randHex(32)}.${extension}`;
