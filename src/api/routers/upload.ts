@@ -2,6 +2,7 @@ import HttpException from '@src/exceptions/HttpException';
 import UploadService from '@src/services/upload';
 import uploader from '@src/utils/uploader';
 import { Router } from 'express';
+import expressAsyncHandler from 'express-async-handler';
 import Container from 'typedi';
 import { authRequired } from '../middleware/auth';
 
@@ -23,6 +24,9 @@ const upload = (app: Router) => {
    *         url:
    *           type: string
    *           example: "https://gooooooooooog.le/some/path/wow/fb669e0382f75aae5407a8c817c87ff4.png"
+   *         hash:
+   *           type: string
+   *           example: "QmYDvPAXtiJg7s8JdRBSLWdgSphQdac8j1YuQNNxcGE1hg"
    */
   app.use('/upload', router);
 
@@ -33,7 +37,7 @@ const upload = (app: Router) => {
    *     description: |
    *       사진 업로드
    *       업로드를 하기 위해서는 이 API를 먼저 호출해서 사진을 서버에 올린 뒤,
-   *       해당 파일 이름을 다른 API에 전달해야 합니다.
+   *       해당 파일의 해시를 다른 API에 전달해야 합니다.
    *     tags:
    *       - Upload
    *     requestBody:
@@ -53,13 +57,18 @@ const upload = (app: Router) => {
    *             schema:
    *               $ref: '#/components/schemas/FileResponse'
    */
-  router.post('/image', authRequired, uploader.single('image'), (req, res) => {
-    const uploadService = Container.get(UploadService);
-    if (!req.file) {
-      throw new HttpException(400, '사진을 업로드해주세요.');
-    }
-    uploadService.uploadImage(req.file);
-  });
+  router.post(
+    '/image',
+    uploader.single('image'),
+    expressAsyncHandler(async (req, res) => {
+      const uploadService = Container.get(UploadService);
+      if (!req.file) {
+        throw new HttpException(400, '사진을 업로드해주세요.');
+      }
+      const result = await uploadService.uploadImage(req.file);
+      res.json(result);
+    }),
+  );
 
   return router;
 };

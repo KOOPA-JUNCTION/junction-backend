@@ -18,6 +18,10 @@ const config = {
       projectId: process.env.FIREBASE_PROJECT_ID || '',
     },
   },
+  pinata: {
+    apiKey: process.env.PINATA_API_KEY || '',
+    secretKey: process.env.PINATA_SECRET_KEY || '',
+  },
   jwtSecretKey: process.env.JWT_SECRET_KEY || '',
 };
 
@@ -31,5 +35,8 @@ if (!config.firebase.credentials.privateKey)
   throw new Error('FIREBASE_PRIVATE_KEY is not provided');
 if (!config.firebase.credentials.projectId)
   throw new Error('FIREBASE_PROJECT_ID is not provided');
+if (!config.pinata.apiKey) throw new Error('PINATA_API_KEY is not provided');
+if (!config.pinata.secretKey)
+  throw new Error('PINATA_SECRET_KEY is not provided');
 
 export default config;

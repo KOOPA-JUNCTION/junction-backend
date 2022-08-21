@@ -112,6 +112,23 @@ const nfts = (app: Router) => {
     }),
   );
 
+  /**
+   * @openapi
+   * /nfts:
+   *   post:
+   *     description: create new nft (minting)
+   *     responses:
+   *       200:
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   */
+  router.post(
+    '/',
+    expressAsyncHandler(async (req, res) => {}),
+  );
+
   return router;
 };
 
