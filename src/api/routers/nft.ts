@@ -26,6 +26,38 @@ const nfts = (app: Router) => {
     '/',
     expressAsyncHandler(async (req, res) => {
       const nftService = Container.get(NftService);
+      const nfts = await nftService.getRandomNfts(5);
+      res.json({ data: nfts });
+    }),
+  );
+
+  /**
+   * /nfts/popular:
+   *   get:
+   *     description: popular NFT 리스트를 가져옵니다
+   *     responses:
+   *       200:
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 data:
+   *                   type: array
+   */
+  router.get(
+    '/popular',
+    expressAsyncHandler(async (req, res) => {
+      const nftService = Container.get(NftService);
+      const nfts = await nftService.getRandomNfts(2);
+      res.json({ data: nfts });
+    }),
+  );
+
+  router.get(
+    '/special',
+    expressAsyncHandler(async (req, res) => {
+      const nftService = Container.get(NftService);
       const nfts = await nftService.getPublicNfts('eth');
       res.json({ data: nfts });
     }),

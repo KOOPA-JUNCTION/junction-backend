@@ -114,4 +114,9 @@ export default class NftService {
     const data = await axios.get<TokenData>(uri);
     return data.data;
   };
+
+  public getRandomNfts = async (size: number) => {
+    const nfts = await this.nftModel.aggregate([{ $sample: { size } }]);
+    return nfts;
+  };
 }
