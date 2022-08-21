@@ -25,9 +25,8 @@ const expressLoader = ({ app }: { app: express.Application }) => {
   app.use(errors());
   app.use(
     (err: HttpException, req: Request, res: Response, next: NextFunction) => {
-      err.status ??= 500;
       const requestCode = Math.random().toString(36).slice(2);
-      res.status(err.status).json({
+      res.status(err.status ?? 500).json({
         message: err.status === 500 ? 'unknown server error' : err.message,
         requestCode,
         stack: err.stack,
