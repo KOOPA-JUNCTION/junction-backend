@@ -1,3 +1,4 @@
+import Nft from '@src/models/nft';
 import User from '@src/models/user';
 import express from 'express';
 import dependencyInjector from './dependencyInjector';
@@ -10,7 +11,7 @@ const loaders = async ({ expressApp }: { expressApp: express.Application }) => {
   mongooseLoader().then(() => {
     logger.info('MongoDB connected');
     dependencyInjector({
-      models: [User],
+      models: [Nft, User],
     });
   });
 };
