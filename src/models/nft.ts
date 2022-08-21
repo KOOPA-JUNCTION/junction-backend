@@ -12,6 +12,7 @@ export const nftSchema = createSchema(
         value: Type.string({ required: true }),
       }),
     ),
+    owner: Type.string(),
   },
   { timestamps: true },
 );

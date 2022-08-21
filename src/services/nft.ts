@@ -49,7 +49,10 @@ export default class NftService {
       chain === 'axl' ? [] : await this.getTokenUrisWeb3Base(chain);
     console.log(tokenURIs);
     const tokenData = await Promise.all(
-      tokenURIs.map(this.getTokenUriInformation),
+      tokenURIs.map(async ([tokenURI, owner]) => ({
+        ...(await this.getTokenUriInformation(tokenURI)),
+        owner,
+      })),
     );
     console.log(tokenData);
     const nfts = tokenData.filter((datum) => !datum.image.includes('ipfs://'));
@@ -80,6 +83,7 @@ export default class NftService {
         description: nft.description,
         properties: nft.attributes,
         imageFileName: images[index],
+        owner: nft.owner,
       })),
     );
     return nfts;
@@ -98,12 +102,12 @@ export default class NftService {
     const tokenUris = await Promise.all(
       Array.from({ length: tokenAmount }, async (_, i) =>
         this.limit(async () => {
-          const result = cont.methods
-            .tokenURI(await cont.methods.tokenByIndex(i).call())
-            .call();
+          const tokenId = await cont.methods.tokenByIndex(i).call();
+          const result = await cont.methods.tokenURI(tokenId).call();
+          const owner = await cont.methods.ownerOf(tokenId).call();
           done += 1;
           console.log(done);
-          return result;
+          return [result, owner] as const;
         }),
       ),
     );
