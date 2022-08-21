@@ -123,4 +123,13 @@ export default class NftService {
     const nfts = await this.nftModel.aggregate([{ $sample: { size } }]);
     return nfts;
   };
+
+  public searchNfts = async (query: string, page: number = 0) => {
+    const nfts = await this.nftModel
+      .find({ name: new RegExp(query, 'i') })
+      .skip(page * 10)
+      .limit(10)
+      .lean();
+    return nfts;
+  };
 }
