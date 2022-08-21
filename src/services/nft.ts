@@ -124,6 +124,14 @@ export default class NftService {
     return nfts;
   };
 
+  public getTodaysPick = async () => {
+    const nfts = await this.nftModel.aggregate([
+      { $match: { todaysPick: true } },
+      { $sample: { size: 2 } },
+    ]);
+    return nfts;
+  };
+
   public searchNfts = async (query: string, page: number = 0) => {
     const nfts = await this.nftModel
       .find({ name: new RegExp(query, 'i') })

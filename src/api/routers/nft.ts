@@ -66,6 +66,30 @@ const nfts = (app: Router) => {
 
   /**
    * @openapi
+   * /nfts/pick:
+   *   get:
+   *     description: 에디터 픽 랜덤하게 보여줌
+   *     responses:
+   *       200:
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 data:
+   *                   type: array
+   */
+  router.get(
+    '/rank',
+    expressAsyncHandler(async (req, res) => {
+      const nftService = Container.get(NftService);
+      const nfts = await nftService.getRandomNfts(2);
+      res.json({ data: nfts });
+    }),
+  );
+
+  /**
+   * @openapi
    * /nfts/rank:
    *   get:
    *     description: 랭킹 순으로 NFT 보여줌

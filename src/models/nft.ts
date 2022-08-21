@@ -13,6 +13,7 @@ export const nftSchema = createSchema(
       }),
     ),
     owner: Type.string(),
+    todaysPick: Type.boolean(),
   },
   { timestamps: true },
 );
