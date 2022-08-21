@@ -31,7 +31,7 @@ const expressLoader = ({ app }: { app: express.Application }) => {
         requestCode,
         stack: err.stack,
       });
-      if (err.status === 500) {
+      if (err.status === 500 || !err.status) {
         logger.error(err.stack);
       }
     },
