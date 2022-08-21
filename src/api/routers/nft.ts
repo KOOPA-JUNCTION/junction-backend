@@ -82,7 +82,9 @@ const nfts = (app: Router) => {
   router.get(
     '/rank',
     expressAsyncHandler(async (req, res) => {
-      res.json({ data: [] });
+      const nftService = Container.get(NftService);
+      const nfts = await nftService.getRandomNfts(2);
+      res.json({ data: nfts });
     }),
   );
 
