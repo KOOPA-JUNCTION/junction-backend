@@ -5,6 +5,7 @@ import pinataSDK from '@pinata/sdk';
 import config from '@src/config';
 import Ipfs from '@src/models/ipfs';
 import { Readable } from 'stream';
+import HttpException from '@src/exceptions/HttpException';
 
 @Service()
 export default class UploadService {
@@ -19,23 +20,27 @@ export default class UploadService {
       .join('');
 
   public uploadImage = async (file: Express.Multer.File) => {
-    const resp = await this.pinata.pinFileToIPFS(Readable.from(file.buffer));
-    const extension = file.originalname.split('.').pop();
-    const fileName = `${this.randHex(32)}.${extension}`;
-    // fs.createWriteStream(path.join(__dirname, '../../files', fileName)).write(
-    //   file.buffer,
-    // );
-    await this.ipfsModel.insertMany({
-      originalFileName: file.originalname,
-      fileName,
-      hash: resp.IpfsHash,
-    });
+    try {
+      const resp = await this.pinata.pinFileToIPFS(Readable.from(file.buffer));
+      const extension = file.originalname.split('.').pop();
+      const fileName = `${this.randHex(32)}.${extension}`;
+      // fs.createWriteStream(path.join(__dirname, '../../files', fileName)).write(
+      //   file.buffer,
+      // );
+      await this.ipfsModel.insertMany({
+        originalFileName: file.originalname,
+        fileName,
+        hash: resp.IpfsHash,
+      });
 
-    return {
-      originalFileName: file.originalname,
-      fileName,
-      url: `/files/${fileName}`,
-      hash: resp.IpfsHash,
-    };
+      return {
+        originalFileName: file.originalname,
+        fileName,
+        url: `/files/${fileName}`,
+        hash: resp.IpfsHash,
+      };
+    } catch (e) {
+      throw new HttpException(500, `Upload failed: ${e}`);
+    }
   };
 }
